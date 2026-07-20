@@ -1,0 +1,10 @@
+{
+  "ceiling_tokens": 8000000,
+  "warn_fraction": 0.8,
+  "project_cwd_substr": "my-project",
+  "milestones": [
+    {"id": "M1", "title": "Skeleton + core module", "budget_tokens": 2500000, "effort": "medium"},
+    {"id": "M2", "title": "Feature + tests", "budget_tokens": 3000000, "effort": "high"},
+    {"id": "M3", "title": "Docs + CI + publish", "budget_tokens": 1500000, "effort": "medium"}
+  ]
+}

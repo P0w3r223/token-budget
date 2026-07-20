@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "token-budget"
+version = "0.1.0"
+description = "Track Claude Code token spend against a milestone budget (standard library only)."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = []  # Runtime uses the standard library only.
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3,<9"]
+
+[project.scripts]
+token-budget = "token_budget.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["token_budget"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

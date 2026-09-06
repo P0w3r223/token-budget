@@ -3,7 +3,7 @@
 [![CI](https://github.com/P0w3r223/token-budget/actions/workflows/ci.yml/badge.svg)](https://github.com/P0w3r223/token-budget/actions/workflows/ci.yml)
 
 Standard-library-only CLI that measures **Claude Code** token spend against a
-milestone budget and enforces a hard ceiling. Portfolio project **A6** — built
+milestone budget and enforces a hard ceiling. Portfolio project **B5** — built
 after measuring the true, cache-read-dominated cost of agentic coding.
 
 ## Why

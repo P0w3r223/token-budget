@@ -4,7 +4,7 @@ Guidance for Claude Code (and any contributor) working in this repo.
 
 ## What this project is
 
-Portfolio project **A6**. A standard-library-only CLI that tracks **Claude Code**
+Portfolio project **B5**. A standard-library-only CLI that tracks **Claude Code**
 token spend against a milestone budget: it parses Claude Code's JSONL session
 transcripts, attributes token usage to milestones by time window, computes cost
 from a per-model pricing table, and enforces a hard ceiling with warn/over gates.
@@ -49,43 +49,28 @@ pytest
 python -m token_budget report            # dashboard for the cwd's budget.json
 python -m token_budget start M1          # stamp a milestone start
 python -m token_budget done M1           # stamp end + PASS/OVER vs budget
+python -m token_budget status            # one-line alias for `report --quiet`
 ```
 
-<!-- code-review-graph MCP tools -->
-## MCP Tools: code-review-graph
+## Code intelligence
 
-**IMPORTANT: This project has a knowledge graph. ALWAYS use the
-code-review-graph MCP tools BEFORE using Grep/Glob/Read to explore
-the codebase.** The graph is faster, cheaper (fewer tokens), and gives
-you structural context (callers, dependents, test coverage) that file
-scanning cannot.
+Two indexes exist over this repo, and which one is reachable depends on where the session started:
 
-### When to use graph tools FIRST
+- `.codegraph/` — the `codegraph_explore` MCP tool, or `codegraph explore "<question>"` from a
+  shell. Returns the relevant symbols' verbatim source plus the call paths between them, so it
+  usually answers a "how does X work" or "what calls Y" question in one call. The CLI ships as
+  `codegraph.cmd`, so from Git Bash it needs the extension — bare `codegraph` resolves only
+  where PATHEXT applies.
+- `.code-review-graph/` — its MCP server is declared in **this repository's** `.mcp.json`, so it
+  loads when Claude Code runs with this directory as the working directory, and is simply absent
+  when the session started in the private portfolio index one level up. When its tools are
+  missing the CLI still works: `uvx code-review-graph <command>`.
 
-- **Exploring code**: `semantic_search_nodes_tool` or `query_graph_tool` instead of Grep
-- **Understanding impact**: `get_impact_radius_tool` instead of manually tracing imports
-- **Code review**: `detect_changes_tool` + `get_review_context_tool` instead of reading entire files
-- **Finding relationships**: `query_graph_tool` with callers_of/callees_of/imports_of/tests_for
-- **Architecture questions**: `get_architecture_overview_tool` + `list_communities_tool`
+**Neither index has a hook**, so both are only as fresh as the last manual update — and a graph
+that predates the work you are looking at will answer confidently about code that is gone.
+`codegraph.cmd status` reports the index's age; `codegraph.cmd sync` brings it forward, and
+`uvx code-review-graph update` does the same for the other. Check before trusting either on a
+question about recent changes.
 
-Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
-
-### Key Tools
-
-| Tool | Use when |
-| ------ | ---------- |
-| `detect_changes_tool` | Reviewing code changes — gives risk-scored analysis |
-| `get_review_context_tool` | Need source snippets for review — token-efficient |
-| `get_impact_radius_tool` | Understanding blast radius of a change |
-| `get_affected_flows_tool` | Finding which execution paths are impacted |
-| `query_graph_tool` | Tracing callers, callees, imports, tests, dependencies |
-| `semantic_search_nodes_tool` | Finding functions/classes by name or keyword |
-| `get_architecture_overview_tool` | Understanding high-level codebase structure |
-| `refactor_tool` | Planning renames, finding dead code |
-
-### Workflow
-
-1. No hooks installed — run `code-review-graph update` after code changes.
-2. Use `detect_changes_tool` for code review.
-3. Use `get_affected_flows_tool` to understand impact.
-4. Use `query_graph_tool` pattern="tests_for" to check coverage.
+Grep, Glob and Read stay correct whenever the question is about text rather than structure, or
+when neither index is available.

@@ -4,7 +4,7 @@ Guidance for Claude Code (and any contributor) working in this repo.
 
 ## What this project is
 
-Portfolio project **B5**. A standard-library-only CLI that tracks **Claude Code**
+A standard-library-only CLI that tracks **Claude Code**
 token spend against a milestone budget: it parses Claude Code's JSONL session
 transcripts, attributes token usage to milestones by time window, computes cost
 from a per-model pricing table, and enforces a hard ceiling with warn/over gates.

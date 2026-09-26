@@ -3,17 +3,15 @@
 [![CI](https://github.com/P0w3r223/token-budget/actions/workflows/ci.yml/badge.svg)](https://github.com/P0w3r223/token-budget/actions/workflows/ci.yml)
 
 Standard-library-only CLI that measures **Claude Code** token spend against a
-milestone budget and enforces a hard ceiling. Built
-after measuring the true, cache-read-dominated cost of agentic coding.
+milestone budget and enforces a hard ceiling.
 
 ## Why
 
-Claude Code bills mostly **cache-read** tokens (the growing context is re-sent
-every turn) — in real transcripts ~97% of total tokens, while output tokens
-(~0.5%) drive the dollar cost at $25/M. The `/cost` view shows a live number but
-nothing is persisted and nothing ties spend to a plan. `token-budget` reads the
-JSONL transcripts Claude Code already writes, attributes usage to your
-milestones, and gates the build so a token budget is actually enforceable.
+Claude Code bills mostly **cache-read** tokens, because the growing context is re-sent every turn,
+while output tokens carry the highest price per token ($25 per million for Opus in the bundled price
+table). The `/cost` view shows a live number, but nothing is persisted and nothing ties spend to a
+plan. `token-budget` reads the JSONL transcripts Claude Code already writes, attributes usage to your
+milestones, and gates the build so a token budget can be enforced.
 
 ## What it does
 
@@ -59,6 +57,8 @@ ceiling. `--manifest`, `--state-dir`, `--transcripts-dir` and `--no-cwd-filter`
 override the defaults.
 
 ## Sample output
+
+Illustrative output from a synthetic ledger; the figures are not from a stored run.
 
 ```
 TOKEN BUDGET - studia-rag
